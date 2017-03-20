@@ -1,0 +1,49 @@
+{
+  "name": "osmvalidation",
+  "version": "0.0.1",
+  "description": "JavaScript library to validate various value-types of OpenStreetMap.",
+  "author": "Andreas Neumann <andr.neumann@googlemail.com>",
+  "contributors": [
+    "Andreas Neumann <andr.neumann@googlemail.com>"
+  ],
+  "bin": {
+    "module-name": "./bin/module-name"
+  },
+  "scripts": {
+    "test": "mocha --ui tdd"
+  },
+  "main": "osmValidation.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cyper85/osmValidation.git"
+  },
+  "bugs": {
+    "url": "https://github.com/cyper85/osmValidation/issues"
+  },
+  "keywords": [
+    "OpenStreetMap",
+    "Validation",
+    "phone",
+    "url",
+    "email",
+    "social network"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "mocha": "^0.7.0",
+    "assume": "<1.0.0 || >=2.3.1 <2.4.5 || >=2.5.2 <3.0.0",
+    "pre-commit": "*"
+  },
+  "preferGlobal": true,
+  "private": true,
+  "publishConfig": {
+    "registry": "https://your-private-hosted-npm.registry.nodejitsu.com"
+  },
+  "subdomain": "foobar",
+  "analyze": true,
+  "license": "MIT",
+  "homepage": "https://github.com/cyper85/osmValidation#readme",
+  "directories": {
+    "test": "test"
+  }
+}
