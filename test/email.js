@@ -28,7 +28,7 @@ describe('mailaddresses', function() {
   it('Test mailaddress: example@example.com', function() {
     assert.equal(true,osmValidation.mail("example@example.com"));
   });
-  it('Test phonenumbers: mailto:example@example.com', function() {
+  it('Test mailaddress: mailto:example@example.com', function() {
     assert.equal(false,osmValidation.mail("mailto:example@example.com"));
   });
 });

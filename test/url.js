@@ -30,12 +30,24 @@ describe('urls', function () {
         assert.equal(true, osmValidation.url("http://google.de/#test=test"));
     });
     it('Test url: https://127.0.0.1/?ab=f', function () {
-        assert.equal(true, osmValidation.url("https://127.0.0.1/?ab=f"));
+        assert.equal(false, osmValidation.url("https://127.0.0.1/?ab=f"));
     });
     it('Test url: https://server-börse.de', function () {
         assert.equal(true, osmValidation.url("https://server-börse.de"));
     });
     it('Test url: file:///C:\\test', function () {
         assert.equal(false, osmValidation.url("file:///C:\test"));
+    });
+    it('Test url: HtTpS://printer.box:8080/test/folder?get=default', function () {
+        assert.equal(true, osmValidation.url("HtTpS://printer.box:8080/test/folder?get=default"));
+    });
+    it('Test url: https://127.0.0.1', function () {
+        assert.equal(false, osmValidation.url("https://127.0.0.1"));
+    });
+    it('Test url: http://[2001:4860:0:2001::68]:80#!test', function () {
+        assert.equal(true, osmValidation.url("http://[2001:4860:0:2001::68]:80#!test"));
+    });
+    it('Test url: http://[::1]:443', function () {
+        assert.equal(false, osmValidation.url("http://[::1]:443"));
     });
 });

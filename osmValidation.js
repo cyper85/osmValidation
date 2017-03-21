@@ -370,7 +370,7 @@ if (typeof osmValidation === "undefined") {
          * Host-Adress
          */
         var host_ipv4 = /^(1?\d{1,2}|2[0-4][0-9]|25[0-5])\.(1?\d{1,2}|2[0-4][0-9]|25[0-5])\.(1?\d{1,2}|2[0-4][0-9]|25[0-5])\.(1?\d{1,2}|2[0-4][0-9]|25[0-5])/;
-        var host_ipv6 = /^\[(([0-9A-Fa-f]{1,4}:){1,7}|:)(:|([0-9A-Fa-f]{1,4}:){1,7})\]/;
+        var host_ipv6 = /^\[(([0-9A-Fa-f]{1,4}:){1,7}|:)(:|([0-9A-Fa-f]{1,4}:){1,7})[0-9A-Fa-f]{0,4}\]/;
         var host_domain = /^[0-9a-zA-Z-_.~]+\.\w+/;
 
         if (host_ipv4.test(url)) {
@@ -379,12 +379,11 @@ if (typeof osmValidation === "undefined") {
             if (local_ipv4.test(url)) {
                 return false;
             }
-
             url = url.replace(host_ipv4, "");
-        } else if (host_ipv4.test(url)) {
+        } else if (host_ipv6.test(url)) {
             // Check for local network addresses (not allowed)
             var local_ipv6 = /^\[(([fF]([cCdD]|[eE]80))|(::\d+\]))/;
-            if (local_ipv4.test(url)) {
+            if (local_ipv6.test(url)) {
                 return false;
             }
             url = url.replace(host_ipv6, "");
