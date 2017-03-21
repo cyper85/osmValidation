@@ -377,7 +377,23 @@ if (typeof osmValidation === "undefined") {
         var host_ipv6 = /^\[(([0-9A-Fa-f]{1,4}:){1,7}|:)(:|([0-9A-Fa-f]{1,4}:){1,7})\]/;
         var host_domain = /^[0-9a-zA-Z-_.~]+\.\w+/;
         
-        if (!(host_ipv4.test(url) || host_ipv6.test(url) || host_domain.test(url))) {
+        if(host_ipv4.test(url)) {
+            // Check for local network addresses (not allowed)
+            var local_ipv4 = /^((0?10\.)|(127\.)|(192\.168\.)|(169\.254\.)|(172\.0?((1[6-9])|(2[0-9])|(3[0-1]))\.))/;
+            if(local_ipv4.test(url)) {
+                return false;
+            }
+            
+            url = url.replace(host_ipv4, "");
+        } else if(host_ipv4.test(url)) {
+            // Check for local network addresses (not allowed)
+            var local_ipv6 = /^\[(([fF]([cCdD]|[eE]80))|(::\d+\]))/;
+            if(local_ipv4.test(url)) {
+                return false;
+            }
+            url = url.replace(host_ipv6, "");
+            
+        } else if (!host_domain.test(url)) {
             // Test IDN
             var idn_name_regex = /^.+([?#/].*)$/;
             var idn = idn2ascii(url.replace(idn_name_regex, ""));
@@ -388,8 +404,6 @@ if (typeof osmValidation === "undefined") {
                 url = url.replace(/^(.+)(?:[?#/].*?)?$/, "");
             }
         } else {
-            url = url.replace(host_ipv4, "");
-            url = url.replace(host_ipv6, "");
             url = url.replace(host_domain, "");
         }
         /*
