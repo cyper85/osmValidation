@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2017 Andreas Neumann <andr.neumann@googlemail.com>.
@@ -30,7 +30,7 @@ if (typeof osmValidation === "undefined") {
 
     // Create a reference to this
     osmValidation = new Object();
-    
+
     // Flag-System
     osmValidation.PLAIN_FLAG = "";
     osmValidation.msg = osmValidation.PLAIN_FLAG;
@@ -254,16 +254,16 @@ if (typeof osmValidation === "undefined") {
                     : string;
         });
     };
-    
+
     osmValidation.PHONE_EMERGENCY = "phonenumber is a valid emergency number";
     osmValidation.PHONE_VALID = "phonenumber is a valid international number";
     osmValidation.PHONE_INVALID = "number is not a emergency number or an international phonenumber (\+\d{1,4} \d+( \d+(-\d+)))";
 
     /**
      * Tests Phonenumbers
-     * 
+     *
      * @param {String} phonenumber
-     * @returns {Boolean} 
+     * @returns {Boolean}
      */
     osmValidation.phone = function (number) {
         switch (number) {
@@ -345,15 +345,15 @@ if (typeof osmValidation === "undefined") {
                 }
         }
     };
-    
+
     osmValidation.MAIL_VALID = "email is valid";
     osmValidation.MAIL_INVALID = "email is invalid";
 
     /**
      * Tests emailaddresses
-     * 
+     *
      * @param {String} mailaddress
-     * @returns {Boolean} 
+     * @returns {Boolean}
      */
     osmValidation.mail = function (email) {
         var regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -365,7 +365,7 @@ if (typeof osmValidation === "undefined") {
             return false;
         }
     };
-    
+
     osmValidation.URL_PROTOCOLL_INVALID = "URL has no or wrong protocoll. At this time, I allow only http or https";
     osmValidation.URL_LOCAL_ADDRESS = "URL to a local service is not useful";
     osmValidation.URL_HOST_INVALID = "Host is not a ipv4- or ipv6-address and it has no fqdn";
@@ -374,7 +374,7 @@ if (typeof osmValidation === "undefined") {
     /**
      * Tests URL
      * @param {String} Url
-     * @returns {Boolean} 
+     * @returns {Boolean}
      */
     osmValidation.url = function (url) {
 
@@ -460,7 +460,7 @@ if (typeof osmValidation === "undefined") {
             return false;
         }
     };
-    
+
     osmValidation.FACEBOOK_ID_ONLY = "correct facebook ID";
     osmValidation.FACEBOOK_URL_VALID = "correct facebook-page URL";
     osmValidation.FACEBOOK_URL_INVALID = "Neither a valid facebook ID nor a plain link (without parameter) to a page";
@@ -471,27 +471,37 @@ if (typeof osmValidation === "undefined") {
             osmValidation.msg = osmValidation.FACEBOOK_ID_ONLY;
             return true;
         }
-        
+
         // Teste auf URL
         var facebookURL = /^(?:https?:\/\/?)?(?:www\.?)?(?:facebook|fb?)\.com\/(?:(?:[a-z0-9.]{5,}?)|pages\/(?:[^/?#\s]{5,}?)\/(?:[0-9]{5,}?)?)[\/]?$/i;
         if(facebookURL.test(facebookID)) {
             osmValidation.msg = osmValidation.FACEBOOK_URL_VALID;
             return true;
         }
-        
+
         osmValidation.msg = osmValidation.FACEBOOK_URL_INVALID;
         return false;
     };
-    
+
     osmValidation.TWITTER_ID_ONLY = "correct twitter ID";
     osmValidation.TWITTER_URL_VALID = "correct twitter-page URL";
     osmValidation.TWITTER_URL_INVALID = "Neither a valid twitter ID nor a plain link (without parameter) to a page";
-    osmValidation.twitter = function (email) {
-        
+    osmValidation.twitter = function (twitterID) {
+        // Nur Nutzername
+        if(/^[@]?[a-z0-9_]{1,15}$/i.test(twitterID)) {
+          osmValidation.msg = osmValidation.TWITTER_ID_ONLY
+          return true;
+        } else if(/^(?:https?:\/\/)?(?:www\.)?twitter\.(?:(?:com)|(?:de))\/[@]?[a-z0-9_]{1,15}$/i.test(twitterID)) {
+          osmValidation.msg = osmValidation.TWITTER_URL_VALID
+          return true;
+        } else {
+          osmValidation.msg = osmValidation.TWITTER_URL_INVALID
+          return false;
+        }
         var regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return regex.test(email);
+        return regex.test(twitterID);
     };
-    
+
     osmValidation.GOOGLE_ID_ONLY = "correct google ID";
     osmValidation.GOOGLE_NAME_ONLY = "correct google plus name";
     osmValidation.GOOGLE_URL_VALID = "correct google-page URL";
@@ -510,7 +520,7 @@ if (typeof osmValidation === "undefined") {
         osmValidation.msg = osmValidation.GOOGLE_URL_INVALID;
         return false;
     };
-    
+
 
     // Export the Underscore object for **CommonJS**, with backwards-compatibility
     // for the old `require()` API. If we're not in CommonJS, add `_` to the
@@ -519,4 +529,3 @@ if (typeof osmValidation === "undefined") {
         module.exports = osmValidation;
     }
 })();
-
