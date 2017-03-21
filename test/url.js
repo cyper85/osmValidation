@@ -22,19 +22,20 @@
  * THE SOFTWARE.
  */
 
+
 var assert = require('assert');
 var osmValidation = require('../osmValidation.js');
-describe('phonenumbers', function () {
-    it('Test phonenumber: +49 111 2314-456', function () {
-        assert.equal(true, osmValidation.phone("+49 111 2314-456"));
+describe('urls', function () {
+    it('Test url: http://google.de/#test=test', function () {
+        assert.equal(true, osmValidation.url("http://google.de/#test=test"));
     });
-    it('Test phonenumber: 112', function () {
-        assert.equal(true, osmValidation.phone("112"));
+    it('Test url: https://127.0.0.1/?ab=f', function () {
+        assert.equal(true, osmValidation.url("https://127.0.0.1/?ab=f"));
     });
-    it('Test phonenumber: 911', function () {
-        assert.equal(true, osmValidation.phone("911"));
+    it('Test url: https://server-börse.de', function () {
+        assert.equal(true, osmValidation.url("https://server-börse.de"));
     });
-    it('Test phonenumber: 0111 23 14 45', function () {
-        assert.equal(false, osmValidation.phone("0111 23 14 45"));
+    it('Test url: file:///C:\\test', function () {
+        assert.equal(false, osmValidation.url("file:///C:\test"));
     });
 });

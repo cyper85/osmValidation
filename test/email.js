@@ -24,17 +24,11 @@
 
 var assert = require('assert');
 var osmValidation = require('../osmValidation.js');
-describe('phonenumbers', function () {
-    it('Test phonenumber: +49 111 2314-456', function () {
-        assert.equal(true, osmValidation.phone("+49 111 2314-456"));
-    });
-    it('Test phonenumber: 112', function () {
-        assert.equal(true, osmValidation.phone("112"));
-    });
-    it('Test phonenumber: 911', function () {
-        assert.equal(true, osmValidation.phone("911"));
-    });
-    it('Test phonenumber: 0111 23 14 45', function () {
-        assert.equal(false, osmValidation.phone("0111 23 14 45"));
-    });
+describe('mailaddresses', function() {
+  it('Test mailaddress: example@example.com', function() {
+    assert.equal(true,osmValidation.mail("example@example.com"));
+  });
+  it('Test phonenumbers: mailto:example@example.com', function() {
+    assert.equal(false,osmValidation.mail("mailto:example@example.com"));
+  });
 });
