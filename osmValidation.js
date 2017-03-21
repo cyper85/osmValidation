@@ -28,13 +28,9 @@ if (typeof osmValidation === "undefined") {
 
 (function () {
 
-    // Establish the root object, `window` in the browser, or `global` on the server.
-    var root = this;
-
     // Create a reference to this
     osmValidation = new Object();
 
-    var isNode = false;
     /** Regular expressions */
 
     const regexSeparators = /[\x2E\u3002\uFF0E\uFF61]/g; // RFC 3490 separators
@@ -376,23 +372,23 @@ if (typeof osmValidation === "undefined") {
         var host_ipv4 = /^(1?\d{1,2}|2[0-4][0-9]|25[0-5])\.(1?\d{1,2}|2[0-4][0-9]|25[0-5])\.(1?\d{1,2}|2[0-4][0-9]|25[0-5])\.(1?\d{1,2}|2[0-4][0-9]|25[0-5])/;
         var host_ipv6 = /^\[(([0-9A-Fa-f]{1,4}:){1,7}|:)(:|([0-9A-Fa-f]{1,4}:){1,7})\]/;
         var host_domain = /^[0-9a-zA-Z-_.~]+\.\w+/;
-        
-        if(host_ipv4.test(url)) {
+
+        if (host_ipv4.test(url)) {
             // Check for local network addresses (not allowed)
             var local_ipv4 = /^((0?10\.)|(127\.)|(192\.168\.)|(169\.254\.)|(172\.0?((1[6-9])|(2[0-9])|(3[0-1]))\.))/;
-            if(local_ipv4.test(url)) {
+            if (local_ipv4.test(url)) {
                 return false;
             }
-            
+
             url = url.replace(host_ipv4, "");
-        } else if(host_ipv4.test(url)) {
+        } else if (host_ipv4.test(url)) {
             // Check for local network addresses (not allowed)
             var local_ipv6 = /^\[(([fF]([cCdD]|[eE]80))|(::\d+\]))/;
-            if(local_ipv4.test(url)) {
+            if (local_ipv4.test(url)) {
                 return false;
             }
             url = url.replace(host_ipv6, "");
-            
+
         } else if (!host_domain.test(url)) {
             // Test IDN
             var idn_name_regex = /^.+([?#/].*)$/;
@@ -415,7 +411,7 @@ if (typeof osmValidation === "undefined") {
         /*
          * End?
          */
-        if(url.length === 0) {
+        if (url.length === 0) {
             return true;
         }
 
@@ -443,10 +439,6 @@ if (typeof osmValidation === "undefined") {
     // global object.
     if (typeof module !== 'undefined' && module.exports) {
         module.exports = osmValidation;
-        root.osmValidation = osmValidation;
-        isNode = true;
-    } else {
-        root.osmValidation = osmValidation;
     }
 })();
 
