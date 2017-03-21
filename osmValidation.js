@@ -30,6 +30,10 @@ if (typeof osmValidation === "undefined") {
 
     // Create a reference to this
     osmValidation = new Object();
+    
+    // Flag-System
+    osmValidation.PLAIN_FLAG = "";
+    osmValidation.msg = osmValidation.PLAIN_FLAG;
 
     /** Regular expressions */
 
@@ -250,6 +254,10 @@ if (typeof osmValidation === "undefined") {
                     : string;
         });
     };
+    
+    osmValidation.PHONE_EMERGENCY = "phonenumber is a valid emergency number";
+    osmValidation.PHONE_VALID = "phonenumber is a valid international number";
+    osmValidation.PHONE_INVALID = "number is not a emergency number or an international phonenumber (\+\d{1,4} \d+( \d+(-\d+)))";
 
     /**
      * Tests Phonenumbers
@@ -320,6 +328,7 @@ if (typeof osmValidation === "undefined") {
             case "1530":
             case "1669":
             case "02800":
+                osmValidation.msg = osmValidation.PHONE_EMERGENCY;
                 return true;
                 break;
                 /*
@@ -327,9 +336,18 @@ if (typeof osmValidation === "undefined") {
                  */
             default:
                 var regex = /^\+(?:[0-9][ -]?){6,14}[0-9]$/;
-                return regex.test(number);
+                if(regex.test(number)) {
+                    osmValidation.msg = osmValidation.PHONE_VALID;
+                    return true;
+                } else {
+                    osmValidation.msg = osmValidation.PHONE_INVALID;
+                    return false;
+                }
         }
     };
+    
+    osmValidation.MAIL_VALID = "email is valid";
+    osmValidation.MAIL_INVALID = "email is invalid";
 
     /**
      * Tests emailaddresses
@@ -339,9 +357,20 @@ if (typeof osmValidation === "undefined") {
      */
     osmValidation.mail = function (email) {
         var regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return regex.test(email);
+        if(regex.test(email)) {
+            osmValidation.msg = osmValidation.MAIL_VALID;
+            return true;
+        } else {
+            osmValidation.msg = osmValidation.MAIL_INVALID;
+            return false;
+        }
     };
-
+    
+    osmValidation.URL_PROTOCOLL_INVALID = "URL has no or wrong protocoll. At this time, I allow only http or https";
+    osmValidation.URL_LOCAL_ADDRESS = "URL to a local service is not useful";
+    osmValidation.URL_HOST_INVALID = "Host is not a ipv4- or ipv6-address and it has no fqdn";
+    osmValidation.URL_INVALID = "URL seems broken";
+    osmValidation.URL_VALID = "URL is valid";
     /**
      * Tests URL
      * @param {String} Url
@@ -355,6 +384,7 @@ if (typeof osmValidation === "undefined") {
         var protocoll = /^https?:\/\//i;
 
         if (!protocoll.test(url)) {
+            osmValidation.msg = osmValidation.URL_PROTOCOLL_INVALID;
             return false;
         } else {
             url = url.replace(protocoll, "");
@@ -377,6 +407,7 @@ if (typeof osmValidation === "undefined") {
             // Check for local network addresses (not allowed)
             var local_ipv4 = /^((0?10\.)|(127\.)|(192\.168\.)|(169\.254\.)|(172\.0?((1[6-9])|(2[0-9])|(3[0-1]))\.))/;
             if (local_ipv4.test(url)) {
+                osmValidation.msg = osmValidation.URL_LOCAL_ADDRESS;
                 return false;
             }
             url = url.replace(host_ipv4, "");
@@ -384,6 +415,7 @@ if (typeof osmValidation === "undefined") {
             // Check for local network addresses (not allowed)
             var local_ipv6 = /^\[(([fF]([cCdD]|[eE]80))|(::\d+\]))/;
             if (local_ipv6.test(url)) {
+                osmValidation.msg = osmValidation.URL_LOCAL_ADDRESS;
                 return false;
             }
             url = url.replace(host_ipv6, "");
@@ -394,6 +426,7 @@ if (typeof osmValidation === "undefined") {
             var idn = idn2ascii(url.replace(idn_name_regex, ""));
             var idn_decoded = idn2ascii(idn);
             if (!host_domain.test(idn_decoded)) {
+                osmValidation.msg = osmValidation.URL_HOST_INVALID;
                 return false;
             } else {
                 url = url.replace(/^(.+)(?:[?#/].*?)?$/, "");
@@ -411,6 +444,7 @@ if (typeof osmValidation === "undefined") {
          * End?
          */
         if (url.length === 0) {
+            osmValidation.msg = osmValidation.URL_VALID;
             return true;
         }
 
@@ -418,20 +452,65 @@ if (typeof osmValidation === "undefined") {
          * delimiter
          */
         var delimiter = /^([?#/].*)?$/;
-        return delimiter.test(url);
+        if(delimiter.test(url)) {
+            osmValidation.msg = osmValidation.URL_VALID;
+            return true;
+        } else {
+            osmValidation.msg = osmValidation.URL_INVALID;
+            return false;
+        }
     };
-    osmValidation.facebook = function (email) {
-        var regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return regex.test(email);
+    
+    osmValidation.FACEBOOK_ID_ONLY = "correct facebook ID";
+    osmValidation.FACEBOOK_URL_VALID = "correct facebook-page URL";
+    osmValidation.FACEBOOK_URL_INVALID = "Neither a valid facebook ID nor a plain link (without parameter) to a page";
+    osmValidation.facebook = function (facebookID) {
+        // Teste auf ID
+        var facebookChars = /^[a-z0-9.]{5,}$/i;
+        if(facebookChars.test(facebookID)) {
+            osmValidation.msg = osmValidation.FACEBOOK_ID_ONLY;
+            return true;
+        }
+        
+        // Teste auf URL
+        var facebookURL = /^(?:https?:\/\/?)?(?:www\.?)?(?:facebook|fb?)\.com\/(?:(?:[a-z0-9.]{5,}?)|pages\/(?:[^/?#\s]{5,}?)\/(?:[0-9]{5,}?)?)[\/]?$/i;
+        if(facebookURL.test(facebookID)) {
+            osmValidation.msg = osmValidation.FACEBOOK_URL_VALID;
+            return true;
+        }
+        
+        osmValidation.msg = osmValidation.FACEBOOK_URL_INVALID;
+        return false;
     };
+    
+    osmValidation.TWITTER_ID_ONLY = "correct twitter ID";
+    osmValidation.TWITTER_URL_VALID = "correct twitter-page URL";
+    osmValidation.TWITTER_URL_INVALID = "Neither a valid twitter ID nor a plain link (without parameter) to a page";
     osmValidation.twitter = function (email) {
+        
         var regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return regex.test(email);
     };
-    osmValidation.google = function (email) {
-        var regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return regex.test(email);
+    
+    osmValidation.GOOGLE_ID_ONLY = "correct google ID";
+    osmValidation.GOOGLE_NAME_ONLY = "correct google plus name";
+    osmValidation.GOOGLE_URL_VALID = "correct google-page URL";
+    osmValidation.GOOGLE_URL_INVALID = "Neither a valid google ID, name nor a plain link (without parameter) to a page";
+    osmValidation.google = function (googleID) {
+        if(/^\d{+}21}$/.test(googleID)) {
+            osmValidation.msg = osmValidation.GOOGLE_ID_ONLY;
+            return true;
+        } else if(/^(?:\+?)?[a-z][a-z0-9-_]+$/i.test(googleID)) {
+            osmValidation.msg = osmValidation.GOOGLE_NAME_ONLY;
+            return true;
+        } else if(/^(?:https?:\/\/)?plus.google.com\/(?:(?:\w\/\d\/)|(?:communities\/))?((\d{21})|((?:\+)?[a-z][a-z0-9-_]+))[/]?$/i.test(googleID)) {
+            osmValidation.msg = osmValidation.GOOGLE_URL_VALID;
+            return true;
+        }
+        osmValidation.msg = osmValidation.GOOGLE_URL_INVALID;
+        return false;
     };
+    
 
     // Export the Underscore object for **CommonJS**, with backwards-compatibility
     // for the old `require()` API. If we're not in CommonJS, add `_` to the
