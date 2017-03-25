@@ -330,13 +330,12 @@ if (typeof osmValidation === "undefined") {
             case "02800":
                 osmValidation.msg = osmValidation.PHONE_EMERGENCY;
                 return true;
-                break;
                 /*
                  * international-number
                  */
             default:
                 var regex = /^\+(?:[0-9][ -]?){6,14}[0-9]$/;
-                if(regex.test(number)) {
+                if (regex.test(number)) {
                     osmValidation.msg = osmValidation.PHONE_VALID;
                     return true;
                 } else {
@@ -357,7 +356,7 @@ if (typeof osmValidation === "undefined") {
      */
     osmValidation.mail = function (email) {
         var regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        if(regex.test(email)) {
+        if (regex.test(email)) {
             osmValidation.msg = osmValidation.MAIL_VALID;
             return true;
         } else {
@@ -452,7 +451,7 @@ if (typeof osmValidation === "undefined") {
          * delimiter
          */
         var delimiter = /^([?#/].*)?$/;
-        if(delimiter.test(url)) {
+        if (delimiter.test(url)) {
             osmValidation.msg = osmValidation.URL_VALID;
             return true;
         } else {
@@ -467,14 +466,14 @@ if (typeof osmValidation === "undefined") {
     osmValidation.facebook = function (facebookID) {
         // Teste auf ID
         var facebookChars = /^[a-z0-9.]{5,}$/i;
-        if(facebookChars.test(facebookID)) {
+        if (facebookChars.test(facebookID)) {
             osmValidation.msg = osmValidation.FACEBOOK_ID_ONLY;
             return true;
         }
 
         // Teste auf URL
         var facebookURL = /^(?:https?:\/\/?)?(?:www\.?)?(?:facebook|fb?)\.com\/(?:(?:[a-z0-9.]{5,}?)|pages\/(?:[^/?#\s]{5,}?)\/(?:[0-9]{5,}?)?)[\/]?$/i;
-        if(facebookURL.test(facebookID)) {
+        if (facebookURL.test(facebookID)) {
             osmValidation.msg = osmValidation.FACEBOOK_URL_VALID;
             return true;
         }
@@ -488,18 +487,16 @@ if (typeof osmValidation === "undefined") {
     osmValidation.TWITTER_URL_INVALID = "Neither a valid twitter ID nor a plain link (without parameter) to a page";
     osmValidation.twitter = function (twitterID) {
         // Nur Nutzername
-        if(/^[@]?[a-z0-9_]{1,15}$/i.test(twitterID)) {
-          osmValidation.msg = osmValidation.TWITTER_ID_ONLY
-          return true;
-        } else if(/^(?:https?:\/\/)?(?:www\.)?twitter\.(?:(?:com)|(?:de))\/[@]?[a-z0-9_]{1,15}$/i.test(twitterID)) {
-          osmValidation.msg = osmValidation.TWITTER_URL_VALID
-          return true;
+        if (/^[@]?[a-z0-9_]{1,15}$/i.test(twitterID)) {
+            osmValidation.msg = osmValidation.TWITTER_ID_ONLY;
+            return true;
+        } else if (/^(?:https?:\/\/)?(?:www\.)?twitter\.(?:(?:com)|(?:de))\/[@]?[a-z0-9_]{1,15}$/i.test(twitterID)) {
+            osmValidation.msg = osmValidation.TWITTER_URL_VALID;
+            return true;
         } else {
-          osmValidation.msg = osmValidation.TWITTER_URL_INVALID
-          return false;
+            osmValidation.msg = osmValidation.TWITTER_URL_INVALID;
+            return false;
         }
-        var regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return regex.test(twitterID);
     };
 
     osmValidation.GOOGLE_ID_ONLY = "correct google ID";
@@ -507,13 +504,13 @@ if (typeof osmValidation === "undefined") {
     osmValidation.GOOGLE_URL_VALID = "correct google-page URL";
     osmValidation.GOOGLE_URL_INVALID = "Neither a valid google ID, name nor a plain link (without parameter) to a page";
     osmValidation.google = function (googleID) {
-        if(/^\d{+}21}$/.test(googleID)) {
+        if (/^\d{+}21}$/.test(googleID)) {
             osmValidation.msg = osmValidation.GOOGLE_ID_ONLY;
             return true;
-        } else if(/^(?:\+?)?[a-z][a-z0-9-_]+$/i.test(googleID)) {
+        } else if (/^(?:\+?)?[a-z][a-z0-9-_]+$/i.test(googleID)) {
             osmValidation.msg = osmValidation.GOOGLE_NAME_ONLY;
             return true;
-        } else if(/^(?:https?:\/\/)?plus.google.com\/(?:(?:\w\/\d\/)|(?:communities\/))?((\d{21})|((?:\+)?[a-z][a-z0-9-_]+))[/]?$/i.test(googleID)) {
+        } else if (/^(?:https?:\/\/)?plus.google.com\/(?:(?:\w\/\d\/)|(?:communities\/))?((\d{21})|((?:\+)?[a-z][a-z0-9-_]+))[/]?$/i.test(googleID)) {
             osmValidation.msg = osmValidation.GOOGLE_URL_VALID;
             return true;
         }
