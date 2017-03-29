@@ -241,7 +241,6 @@ var osmValidation;
          * email address.
          */
 
-<<<<<<< HEAD
         var idn2ascii = function(urlpart) {
             return mapDomain(urlpart, function(string) {
                 return regexNonASCII.test(string) ?
@@ -262,87 +261,9 @@ var osmValidation;
          */
         this.phone = function(number) {
             switch (number) {
-=======
-    osmValidation.PHONE_EMERGENCY = "phonenumber is a valid emergency number";
-    osmValidation.PHONE_VALID = "phonenumber is a valid international number";
-    osmValidation.PHONE_INVALID = "number is not a emergency number or an international phonenumber (\+\d{1,4} \d+( \d+(-\d+)))";
-
-    /**
-     * Tests Phonenumbers
-     *
-     * @param {String} phonenumber
-     * @returns {Boolean}
-     */
-    osmValidation.phone = function (number) {
-        switch (number) {
-            /*
-             * emergency-numbers
-             */
-            case "000":
-            case "15":
-            case "17":
-            case "18":
-            case "061":
-            case "062":
-            case "080":
-            case "081":
-            case "085":
-            case "088":
-            case "091":
-            case "092":
-            case "100":
-            case "101":
-            case "102":
-            case "103":
-            case "108":
-            case "110":
-            case "112":
-            case "113":
-            case "117":
-            case "118":
-            case "119":
-            case "122":
-            case "123":
-            case "133":
-            case "143":
-            case "144":
-            case "145":
-            case "147":
-            case "150":
-            case "153":
-            case "154":
-            case "155":
-            case "158":
-            case "160":
-            case "165":
-            case "166":
-            case "190":
-            case "191":
-            case "192":
-            case "193":
-            case "194":
-            case "199":
-            case "911":
-            case "995":
-            case "996":
-            case "997":
-            case "998":
-            case "999":
-            case "0123":
-            case "1006":
-            case "1414":
-            case "1415":
-            case "1515":
-            case "1530":
-            case "1669":
-            case "02800":
-                osmValidation.msg = osmValidation.PHONE_EMERGENCY;
-                return true;
->>>>>>> a0928a925399fafc346ae892fbee8dd93c84f05b
                 /*
                  * emergency-numbers
                  */
-<<<<<<< HEAD
                 case "000":
                 case "15":
                 case "17":
@@ -402,12 +323,6 @@ var osmValidation;
                 case "1669":
                 case "02800":
                     this.msg = this.PHONE_EMERGENCY;
-=======
-            default:
-                var regex = /^\+(?:[0-9][ -]?){6,14}[0-9]$/;
-                if (regex.test(number)) {
-                    osmValidation.msg = osmValidation.PHONE_VALID;
->>>>>>> a0928a925399fafc346ae892fbee8dd93c84f05b
                     return true;
                     break;
                     /*
@@ -425,30 +340,8 @@ var osmValidation;
             }
         };
 
-<<<<<<< HEAD
         this.MAIL_VALID = "email is valid";
         this.MAIL_INVALID = "email is invalid";
-=======
-    osmValidation.MAIL_VALID = "email is valid";
-    osmValidation.MAIL_INVALID = "email is invalid";
-
-    /**
-     * Tests emailaddresses
-     *
-     * @param {String} mailaddress
-     * @returns {Boolean}
-     */
-    osmValidation.mail = function (email) {
-        var regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        if (regex.test(email)) {
-            osmValidation.msg = osmValidation.MAIL_VALID;
-            return true;
-        } else {
-            osmValidation.msg = osmValidation.MAIL_INVALID;
-            return false;
-        }
-    };
->>>>>>> a0928a925399fafc346ae892fbee8dd93c84f05b
 
         /**
          * Tests emailaddresses
@@ -682,48 +575,9 @@ var osmValidation;
         };
     };
 
-<<<<<<< HEAD
-
     // Standard
     osmValidation = new osmValidationClass();
 })();
-=======
-    osmValidation.TWITTER_ID_ONLY = "correct twitter ID";
-    osmValidation.TWITTER_URL_VALID = "correct twitter-page URL";
-    osmValidation.TWITTER_URL_INVALID = "Neither a valid twitter ID nor a plain link (without parameter) to a page";
-    osmValidation.twitter = function (twitterID) {
-        // Nur Nutzername
-        if (/^[@]?[a-z0-9_]{1,15}$/i.test(twitterID)) {
-            osmValidation.msg = osmValidation.TWITTER_ID_ONLY;
-            return true;
-        } else if (/^(?:https?:\/\/)?(?:www\.)?twitter\.(?:(?:com)|(?:de))\/[@]?[a-z0-9_]{1,15}$/i.test(twitterID)) {
-            osmValidation.msg = osmValidation.TWITTER_URL_VALID;
-            return true;
-        } else {
-            osmValidation.msg = osmValidation.TWITTER_URL_INVALID;
-            return false;
-        }
-    };
-
-    osmValidation.GOOGLE_ID_ONLY = "correct google ID";
-    osmValidation.GOOGLE_NAME_ONLY = "correct google plus name";
-    osmValidation.GOOGLE_URL_VALID = "correct google-page URL";
-    osmValidation.GOOGLE_URL_INVALID = "Neither a valid google ID, name nor a plain link (without parameter) to a page";
-    osmValidation.google = function (googleID) {
-        if (/^\d{+}21}$/.test(googleID)) {
-            osmValidation.msg = osmValidation.GOOGLE_ID_ONLY;
-            return true;
-        } else if (/^(?:\+?)?[a-z][a-z0-9-_]+$/i.test(googleID)) {
-            osmValidation.msg = osmValidation.GOOGLE_NAME_ONLY;
-            return true;
-        } else if (/^(?:https?:\/\/)?plus.google.com\/(?:(?:\w\/\d\/)|(?:communities\/))?((\d{21})|((?:\+)?[a-z][a-z0-9-_]+))[/]?$/i.test(googleID)) {
-            osmValidation.msg = osmValidation.GOOGLE_URL_VALID;
-            return true;
-        }
-        osmValidation.msg = osmValidation.GOOGLE_URL_INVALID;
-        return false;
-    };
->>>>>>> a0928a925399fafc346ae892fbee8dd93c84f05b
 
 // JQuery
 if (typeof jQuery !== typeof undefined) {
