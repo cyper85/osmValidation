@@ -514,7 +514,69 @@ var osmValidation;
             this.msg = this.GOOGLE_URL_INVALID;
             return false;
         };
+
+        this.WIKIPEDIA_INCLUDING_LANG = "correct wikipedia page-name including language-tag";
+        this.WIKIPEDIA_EXCLUDING_LANG = "correct wikipedia page-name without language-tag";
+        this.WIKIPEDIA_URL = "correct wikipedia url";
+        this.WIKIPEDIA_INVALID = "Wikipedia-Tag not valid";
+        this.wikipedia = function(wikipediaPage) {
+            this.msg = this.WIKIPEDIA_EXCLUDING_LANG;
+            var urlRegex = /^(https?\:\/\/\w+\.wikipedia\.org\/wiki\/)/i;
+            var langRegex = /^([a-z]{2,}\:)/;
+            if(urlRegex.test(wikipediaPage) && this.url(wikipediaPage)) {
+              this.msg = this.WIKIPEDIA_URL;
+              wikipediaPage = wikipediaPage.replace(urlRegex, "");
+            } else if (langRegex.test(wikipediaPage)) {
+                this.msg = this.WIKIPEDIA_INCLUDING_LANG;
+                wikipediaPage = wikipediaPage.replace(langRegex, "");
+            }
+
+            if(/[~]{3,}/.test(wikipediaPage)) {
+              this.msg = this.WIKIPEDIA_INVALID;
+              return false;
+            }
+            if(/[#<>\[\]|{}]/.test(wikipediaPage)) {
+              this.msg = this.WIKIPEDIA_INVALID;
+              return false;
+            }
+            if(/^[:]/.test(wikipediaPage)) {
+              this.msg = this.WIKIPEDIA_INVALID;
+              return false;
+            }
+            if(/^[.]{1,2}\//.test(wikipediaPage)) {
+              this.msg = this.WIKIPEDIA_INVALID;
+              return false;
+            }
+            if(/\/[.]{1,2}$/.test(wikipediaPage)) {
+              this.msg = this.WIKIPEDIA_INVALID;
+              return false;
+            }
+            if(/\/[.]{1,2}\//.test(wikipediaPage)) {
+              this.msg = this.WIKIPEDIA_INVALID;
+              return false;
+            }
+            if(/^(?:(special)|(user)|(talk)|(user[_ ]talk))\:/i.test(wikipediaPage)) {
+              this.msg = this.WIKIPEDIA_INVALID;
+              return false;
+            }
+            return true;
+        };
+
+        this.WIKIDATA_VALID_TAG = "correct wikidata tag";
+        this.WIKIDATA_INVALID = "Wikidata-Tag not valid";
+        this.wikidata = function(wikidataID) {
+            if(/^Q\d+$/.test(wikidataID)) {
+              this.msg = this.WIKIDATA_VALID_TAG;
+              return true;
+            } else {
+                this.msg = this.WIKIDATA_INVALID;
+                return false;
+            }
+
+        };
     };
+
+
     // Standard
     osmValidation = new osmValidationClass();
 })();
