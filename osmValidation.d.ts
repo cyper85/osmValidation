@@ -35,7 +35,7 @@ interface OsmValidation {
     wikidata(wikidataID: string): boolean;
     
     // Fehlermeldung
-    msg():string;
+    msg:string;
     
     // Konstanten / FLAGS
     PLAIN_FLAG    : string;

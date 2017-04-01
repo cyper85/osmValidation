@@ -88,7 +88,7 @@ Download *osmValidation.js* and include it before you use it.
 * `wikipedia(string)` Validate wikipedia-Page tag
 * `wikidata(string)` Validate wikidata-ID
 
-You can validate a givven String as parameter. The return is a boolean (false or true). If you want more informations, you can use `msg()`. This function returns a string with more informations about the validation. If you want to use your own error-messages: every msg()-string is a public string-constant of osmValidation. You can compare the return with the constant.
+You can validate a givven String as parameter. The return is a boolean (false or true). If you want more informations, you can read `msg`. This function returns a string with more informations about the validation. If you want to use your own error-messages: every `msg`-string is a public string-constant of osmValidation. You can compare the return with the constant.
 
 Available constants:
 * `PLAIN_FLAG` empty string, default message
