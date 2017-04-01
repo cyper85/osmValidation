@@ -1,0 +1,25 @@
+{
+  "name": "osmValidation",
+  "homepage": "https://github.com/cyper85/osmValidation",
+  "authors": [
+    "Andreas Neumann <andr.neumann@googlemail.com>"
+  ],
+  "description": "JavaScript library to validate various value-types of OpenStreetMap.",
+  "main": "osmValidation.js",
+  "keywords": [
+    "OpenStreetMap",
+    "Validation",
+    "phone",
+    "url",
+    "email",
+    "social network"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
