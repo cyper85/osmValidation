@@ -248,7 +248,10 @@ var osmValidation;
                     string;
             });
         };
-
+        
+        /**
+         * Flag vor emergency Phonenumbers
+         */
         this.PHONE_EMERGENCY = "phonenumber is a valid emergency number";
         this.PHONE_VALID = "phonenumber is a valid international number";
         this.PHONE_INVALID = "number is not a emergency number or an international phonenumber (\+\d{1,4} \d+( \d+(-\d+)))";
@@ -346,8 +349,8 @@ var osmValidation;
         /**
          * Tests emailaddresses
          *
-         * @param {String} mailaddress
-         * @returns {Boolean}
+         * @param {string} mailaddress
+         * @returns {boolean}
          */
         this.mail = function(email) {
             var regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -365,10 +368,11 @@ var osmValidation;
         this.URL_HOST_INVALID = "Host is not a ipv4- or ipv6-address and it has no fqdn";
         this.URL_INVALID = "URL seems broken";
         this.URL_VALID = "URL is valid";
+        
         /**
          * Tests URL
-         * @param {String} Url
-         * @returns {Boolean}
+         * @param {string} url
+         * @returns {boolean}
          */
         this.url = function(url) {
 
@@ -458,6 +462,12 @@ var osmValidation;
         this.FACEBOOK_ID_ONLY = "correct facebook ID";
         this.FACEBOOK_URL_VALID = "correct facebook-page URL";
         this.FACEBOOK_URL_INVALID = "Neither a valid facebook ID nor a plain link (without parameter) to a page";
+        
+        /**
+         * Validate Facebook-IDs
+         * @param {string} facebookID
+         * @returns {Boolean}
+         */
         this.facebook = function(facebookID) {
             // Teste auf ID
             var facebookChars = /^[a-z0-9.]{5,}$/i;
@@ -479,6 +489,12 @@ var osmValidation;
         this.TWITTER_ID_ONLY = "correct twitter ID";
         this.TWITTER_URL_VALID = "correct twitter-page URL";
         this.TWITTER_URL_INVALID = "Neither a valid twitter ID nor a plain link (without parameter) to a page";
+        
+        /**
+         * Validate Twitter-IDs
+         * @param {string} twitterID
+         * @returns {Boolean}
+         */
         this.twitter = function(twitterID) {
             // Nur Nutzername
             if (/^[@]?[a-z0-9_]{1,15}$/i.test(twitterID)) {
@@ -499,6 +515,12 @@ var osmValidation;
         this.GOOGLE_NAME_ONLY = "correct google plus name";
         this.GOOGLE_URL_VALID = "correct google-page URL";
         this.GOOGLE_URL_INVALID = "Neither a valid google ID, name nor a plain link (without parameter) to a page";
+        
+        /**
+         * Validate google-plus-IDs
+         * @param {string} googleID
+         * @returns {Boolean}
+         */
         this.google = function(googleID) {
             if (/^\d{+}21}$/.test(googleID)) {
                 this.msg = this.GOOGLE_ID_ONLY;
@@ -518,6 +540,12 @@ var osmValidation;
         this.WIKIPEDIA_EXCLUDING_LANG = "correct wikipedia page-name without language-tag";
         this.WIKIPEDIA_URL = "correct wikipedia url";
         this.WIKIPEDIA_INVALID = "Wikipedia-Tag not valid";
+        
+        /**
+         * Validate wikipedia-pages
+         * @param {string} wikipediaPage
+         * @returns {Boolean}
+         */
         this.wikipedia = function(wikipediaPage) {
             this.msg = this.WIKIPEDIA_EXCLUDING_LANG;
             var urlRegex = /^(https?\:\/\/\w+\.wikipedia\.org\/wiki\/)/i;
@@ -563,6 +591,12 @@ var osmValidation;
 
         this.WIKIDATA_VALID_TAG = "correct wikidata tag";
         this.WIKIDATA_INVALID = "Wikidata-Tag not valid";
+        
+        /**
+         * validate wikidata IDs
+         * @param {string} wikidataID
+         * @returns {Boolean}
+         */
         this.wikidata = function(wikidataID) {
             if(/^Q\d+$/.test(wikidataID)) {
               this.msg = this.WIKIDATA_VALID_TAG;
