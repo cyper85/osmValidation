@@ -1,7 +1,7 @@
 # osmValidation
 JavaScript library to validate various value-types of OpenStreetMap.
 
-Useable in [https://plainjs.com](plain.js), [https://nodejs.org](node.js) and [https://jquery.com](jQuery).
+Useable in [PlainJS](https://plainjs.com), [nodeJS](https://nodejs.org) and [jQuery](https://jquery.com).
 
 ## Installation
 ### node.js
