@@ -5,7 +5,7 @@ Useable in [PlainJS](https://plainjs.com), [nodeJS](https://nodejs.org) and [jQu
 
 ## Installation
 ### node.js
-Install osmvalidation via npm:
+Install osmvalidation via [npm](https://www.npmjs.com/package/osmvalidation):
 
 ```bash
 npm install osmvalidation
