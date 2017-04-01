@@ -16,6 +16,7 @@ var osmValidation = require('osmvalidation');
 
 if(osmValidation.phone('+49 123 456-789')) {
     // do stuff
+    console.log(osmValidation.msg);
 }
 ```
 
@@ -39,7 +40,7 @@ Download *osmValidation.js* and include it before you use it.
         <script type="text/javascript">
             $('input[type=submit]').attr('disabled','disabled');
             $('input[type=url]').onkeyup(function(){
-                if($(this).validate()) {
+                if($(this).osmValidate()) {
                     $('input[type="submit"]').removeAttr('disabled');
                 } else {
                     $('input[type=submit]').attr('disabled','disabled');
@@ -118,3 +119,6 @@ Available constants:
 * `WIKIPEDIA_INVALID` Wikipedia-Tag not valid        
 * `WIKIDATA_VALID_TAG` correct wikidata tag
 * `WIKIDATA_INVALID` Wikidata-Tag not valid
+
+### jQuery
+There is a special jQuery-Function. You can validate an object by the function `osmValidate()`. It use the `type`- or `data-type`-attribute of the object as identifier for the validation-function. It returns a boolean, **NOT** the object itself!
