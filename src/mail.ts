@@ -1,4 +1,4 @@
-import { isDomainName, isLocalHost } from './host.js';
+import { isDomainName, isLocalHost, toHostname } from './host.js';
 import { fail, ok, type ValidationResult } from './result.js';
 
 // dot-atom or quoted string, see RFC 5322; non-ASCII is allowed (RFC 6531)
@@ -36,18 +36,6 @@ function check(value: string): ValidationResult {
     return fail('MAIL_LOCAL_ADDRESS', 'E-mail address with a local domain is not useful');
   }
   return ok('MAIL_VALID', 'E-mail address is valid');
-}
-
-/** Converts an (internationalised) domain to its ASCII form. */
-function toHostname(domain: string): string | undefined {
-  if (domain === '' || /[\s/?#:@[\]\\%]/.test(domain)) {
-    return undefined;
-  }
-  try {
-    return new URL(`http://${domain}/`).hostname;
-  } catch {
-    return undefined;
-  }
 }
 
 function suggest(candidate: string): string | undefined {

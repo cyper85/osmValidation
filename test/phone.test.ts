@@ -48,3 +48,14 @@ describe('phone', () => {
     expect(phone('tel:030 1234567', { country: 'DE' }).suggestion).toBe('+49 30 1234567');
   });
 });
+
+describe('phone without "+"', () => {
+  it('suggests adding "+" for numbers with country code', () => {
+    expect(phone('79865555505')).toMatchObject({ valid: false, code: 'PHONE_PLUS_MISSING', suggestion: '+7 986 555 55 05' });
+    expect(phone('4930123456')).toMatchObject({ code: 'PHONE_PLUS_MISSING', suggestion: '+49 30 123456' });
+  });
+
+  it('prefers the national number if a country is given', () => {
+    expect(phone('030123456', { country: 'DE' })).toMatchObject({ code: 'PHONE_NOT_INTERNATIONAL', suggestion: '+49 30 123456' });
+  });
+});
