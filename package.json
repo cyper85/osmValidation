@@ -1,15 +1,17 @@
 {
   "name": "osmvalidation",
-  "version": "0.0.3",
+  "version": "1.0.0-alpha.0",
   "description": "JavaScript library to validate various value-types of OpenStreetMap.",
   "author": "Andreas Neumann <andr.neumann@googlemail.com>",
   "contributors": [
     "Andreas Neumann <andr.neumann@googlemail.com>"
   ],
   "scripts": {
-    "test": "mocha"
+    "test": "vitest run",
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build && npm test"
   },
-  "main": "osmValidation.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/cyper85/osmValidation.git"
@@ -23,16 +25,32 @@
     "phone",
     "url",
     "email",
-    "social network"
+    "social network",
+    "wikipedia",
+    "wikidata"
   ],
-  "dependencies": {},
   "devDependencies": {
-    "mocha": "^12.0.0"
+    "typescript": "^5.9.3",
+    "vitest": "^5.0.5"
   },
-  "analyze": true,
   "license": "MIT",
   "homepage": "https://github.com/cyper85/osmValidation#readme",
-  "directories": {
-    "test": "test"
+  "dependencies": {
+    "libphonenumber-js": "^1.13.15"
+  },
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=18"
   }
 }
