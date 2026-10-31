@@ -7,12 +7,14 @@ import { fail, ok, type ValidationResult } from './result.js';
  */
 
 const FACEBOOK_USERNAME = /^[a-z0-9.]{5,}$/i;
+/** Page without username: name slug plus numeric ID, e.g. "Cafe-Mueller-1234567890". */
+const FACEBOOK_PAGE_SLUG = /^[\p{L}\p{M}\p{N}._-]+-\d{5,}$/u;
 const FACEBOOK_HOST = /^(?:(?:www|m|mobile|web|business|[a-z]{2}-[a-z]{2})\.)?(?:facebook|fb)\.com$/i;
 const FACEBOOK_RESERVED = new Set(['pages', 'people', 'profile.php', 'groups', 'events', 'sharer', 'share', 'watch', 'login']);
 
 /** Validates a Facebook page (`contact:facebook`, `facebook`). */
 export function facebook(value: string): ValidationResult {
-  if (FACEBOOK_USERNAME.test(value)) {
+  if (FACEBOOK_USERNAME.test(value) || FACEBOOK_PAGE_SLUG.test(value)) {
     return ok('FACEBOOK_USERNAME', 'Valid Facebook username');
   }
 
@@ -28,6 +30,10 @@ export function facebook(value: string): ValidationResult {
     path = `profile.php?id=${id}`;
   } else if (segments.length === 1 && FACEBOOK_USERNAME.test(segments[0] ?? '') && !FACEBOOK_RESERVED.has(segments[0] ?? '')) {
     path = segments[0];
+  } else if (segments.length === 1 && FACEBOOK_PAGE_SLUG.test(segments[0] ?? '')) {
+    path = segments[0];
+  } else if (segments.length === 2 && segments[0] === 'p' && FACEBOOK_PAGE_SLUG.test(segments[1] ?? '')) {
+    path = segments.join('/');
   } else if (segments.length === 3 && (segments[0] === 'pages' || segments[0] === 'people') && /^\d{5,}$/.test(segments[2] ?? '')) {
     path = segments.join('/');
   }
