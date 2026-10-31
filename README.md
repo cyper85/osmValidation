@@ -15,7 +15,7 @@ caller.
 npm install osmvalidation
 ```
 
-ES module with TypeScript types, for Node.js ≥ 18 and browsers (via a bundler).
+ES module with TypeScript types, for Node.js ≥ 22 and browsers (via a bundler).
 
 ## Usage
 
