@@ -8,6 +8,11 @@ describe('facebook', () => {
     ['https://www.facebook.com/pages/Khg-Bar/497072720344722', 'FACEBOOK_URL'],
     ['https://www.facebook.com/profile.php?id=100064123456789', 'FACEBOOK_URL'],
     ['https://www.facebook.com/OpenStreetMap/', 'FACEBOOK_URL'],
+    ['https://www.facebook.com/Cafe-Mueller-Ilmenau-1234567890/', 'FACEBOOK_URL'],
+    ['https://www.facebook.com/Bäckerei-Müller-108223451234567', 'FACEBOOK_URL'],
+    ['https://www.facebook.com/p/Cafe-Mueller-100063123456789/', 'FACEBOOK_URL'],
+    ['https://www.facebook.com/p/Bäckerei-Müller-61551234567890', 'FACEBOOK_URL'],
+    ['Cafe-Mueller-1234567890', 'FACEBOOK_USERNAME'],
   ])('accepts %s', (value, code) => {
     expect(facebook(value)).toMatchObject({ valid: true, code });
     expect(facebook(value).suggestion).toBeUndefined();
@@ -18,6 +23,10 @@ describe('facebook', () => {
     'https://f.com/OpenStreetMap',
     'https://www.facebook.com/groups/',
     'https://www.facebook.com/profile.php',
+    'https://www.facebook.com/p/',
+    'https://www.facebook.com/p/Cafe-Mueller',
+    'https://www.facebook.com/Cafe-Mueller',
+    'https://www.facebook.com/p/Cafe-Mueller-100063123456789/about',
     'https://example.com/OpenStreetMap',
     'abc',
   ])('rejects %s', (value) => {
