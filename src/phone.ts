@@ -58,11 +58,21 @@ export function phone(value: string, options: PhoneOptions = {}): ValidationResu
   }
 
   const number = country === undefined ? undefined : parse(value, country);
+  // "4930123456" instead of "+49 30 123456"
+  const withPlus = number === undefined && /^[1-9]\d{9,14}$/.test(value) ? parse(`+${value}`) : undefined;
+  if (withPlus !== undefined) {
+    return fail('PHONE_PLUS_MISSING', 'Phone number is missing the "+" before the country code', withPlus.formatInternational());
+  }
   return fail(
     'PHONE_NOT_INTERNATIONAL',
     'Phone number is not in international format (+<country code> <number>)',
     number?.formatInternational(),
   );
+}
+
+/** International format of a valid phone number, e.g. "+49 30 1234567". */
+export function formatInternational(value: string, country?: CountryCode): string | undefined {
+  return parse(value, country)?.formatInternational();
 }
 
 function parse(value: string, country?: CountryCode): PhoneNumber | undefined {

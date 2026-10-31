@@ -26,6 +26,24 @@ export function isDomainName(hostname: string): boolean {
   return labels.length >= 2 && labels.every((label) => LABEL.test(label)) && TLD.test(tld);
 }
 
+/** Converts an (internationalised) domain to its ASCII form. */
+export function toHostname(domain: string): string | undefined {
+  if (domain === '' || /[\s/?#:@[\]\\%]/.test(domain)) {
+    return undefined;
+  }
+  try {
+    return new URL(`http://${domain}/`).hostname;
+  } catch {
+    return undefined;
+  }
+}
+
+/** A domain name on the public internet, e.g. the server part of a handle. */
+export function isPublicDomain(domain: string): boolean {
+  const hostname = toHostname(domain);
+  return hostname !== undefined && isDomainName(hostname) && !isLocalHost(hostname);
+}
+
 export function isLocalHost(hostname: string): boolean {
   switch (hostKind(hostname)) {
     case 'ipv4':
