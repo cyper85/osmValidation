@@ -49,6 +49,37 @@ describe('phone', () => {
   });
 });
 
+// the hyphen before an extension (DIN 5008) is allowed in OSM and stays in suggestions
+describe('phone extension', () => {
+  it.each([
+    ['03677 6414-0', '+49 3677 6414-0'],
+    ['03677 6414-12', '+49 3677 6414-12'],
+    ['(03677) 6414-0', '+49 3677 6414-0'],
+    ['03677/6414-0', '+49 3677 6414-0'],
+    ['030 1234567-89', '+49 30 1234567-89'],
+  ])('keeps it in the suggestion for %s', (value, suggestion) => {
+    expect(phone(value, { country: 'DE' })).toMatchObject({ code: 'PHONE_NOT_INTERNATIONAL', suggestion });
+  });
+
+  it('keeps it when fixing the prefix', () => {
+    expect(phone('0049 3677 6414-0').suggestion).toBe('+49 3677 6414-0');
+    expect(phone('+49 (0)3677 6414-0').suggestion).toBe('+49 3677 6414-0');
+  });
+
+  it('accepts it in international numbers', () => {
+    expect(phone('+49 3677 6414-0')).toMatchObject({ valid: true, code: 'PHONE_VALID' });
+  });
+
+  it('does not take a hyphen after the area code for an extension', () => {
+    expect(phone('0361-12345', { country: 'DE' }).suggestion).toBe('+49 361 12345');
+    expect(phone('030 1234567', { country: 'DE' }).suggestion).toBe('+49 30 1234567');
+  });
+
+  it('does not take hyphens between groups for an extension', () => {
+    expect(phone('8 922 703-30-00', { country: 'RU' }).suggestion).toBe('+7 922 703 30 00');
+  });
+});
+
 describe('phone without "+"', () => {
   it('suggests adding "+" for numbers with country code', () => {
     expect(phone('79865555505')).toMatchObject({ valid: false, code: 'PHONE_PLUS_MISSING', suggestion: '+7 986 555 55 05' });

@@ -125,6 +125,12 @@ Pass the country (e.g. from `addr:country`) to get country-specific emergency
 numbers and suggestions for numbers in national format. Without a country,
 emergency numbers of all known countries are accepted.
 
+An extension separated by a hyphen (DIN 5008), which OpenStreetMap allows,
+stays in suggestions: `03677 6414-0` becomes `+49 3677 6414-0`, not
+`+49 3677 64140`. Only a single hyphen after another separator counts as an
+extension; `0361-12345` (hyphen after the area code) and `8 922 703-30-00`
+(hyphens between groups) are formatted as usual.
+
 ## Migrating from 0.x
 
 * ES module instead of a global object; the jQuery plugin and Bower are gone.
