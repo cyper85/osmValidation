@@ -15,14 +15,53 @@ describe('whatsapp', () => {
     expect(whatsapp('112')).toMatchObject({ valid: false, code: 'WHATSAPP_INVALID' });
   });
 
-  it('converts links to a phone number', () => {
+  it('accepts links with a number, but prefers the number alone', () => {
     expect(whatsapp('https://wa.me/4915123456789')).toMatchObject({
-      valid: false,
-      code: 'WHATSAPP_URL',
+      valid: true,
+      code: 'WHATSAPP_URL_NUMBER',
       suggestion: '+49 1512 3456789',
     });
-    expect(whatsapp('https://api.whatsapp.com/send?phone=4915123456789').suggestion).toBe('+49 1512 3456789');
-    expect(whatsapp('https://wa.me/message/ABCDEF').suggestion).toBeUndefined();
+    expect(whatsapp('https://api.whatsapp.com/send?phone=4915123456789')).toMatchObject({
+      valid: true,
+      code: 'WHATSAPP_URL_NUMBER',
+      suggestion: '+49 1512 3456789',
+    });
+    expect(whatsapp('https://wa.me/4915123456789?text=Hallo')).toMatchObject({
+      valid: false,
+      code: 'WHATSAPP_URL_PARAMETERS',
+      suggestion: '+49 1512 3456789',
+    });
+  });
+
+  // usernames: https://faq.whatsapp.com/1561101675623754 (link wa.me/<username>)
+  it.each([
+    ['https://wa.me/baeckerei.sonnenschein', undefined],
+    ['wa.me/baeckerei_sonnenschein', 'https://wa.me/baeckerei_sonnenschein'],
+    ['https://www.wa.me/Sonnenschein2026/', 'https://wa.me/Sonnenschein2026'],
+    ['https://wa.me/message/ABCDEFGH1234', undefined],
+    ['http://wa.me/message/ABCDEFGH1234', 'https://wa.me/message/ABCDEFGH1234'],
+  ])('accepts the link %s', (value, suggestion) => {
+    expect(whatsapp(value)).toMatchObject({ valid: true, code: 'WHATSAPP_URL' });
+    expect(whatsapp(value).suggestion).toBe(suggestion);
+  });
+
+  it('accepts usernames with "@" and suggests the link', () => {
+    expect(whatsapp('@baeckerei.sonnenschein')).toMatchObject({
+      valid: true,
+      code: 'WHATSAPP_USERNAME',
+      suggestion: 'https://wa.me/baeckerei.sonnenschein',
+    });
+  });
+
+  it.each([
+    ['https://wa.me/message/ABCDEF?src=qr', 'WHATSAPP_URL_PARAMETERS', 'https://wa.me/message/ABCDEF'],
+    ['https://whatsapp.com/channel/0029VaABCDEF', 'WHATSAPP_INVALID', undefined],
+    ['https://wa.me/message', 'WHATSAPP_INVALID', undefined],
+    ['https://wa.me/ab', 'WHATSAPP_INVALID', undefined],
+    ['yes', 'WHATSAPP_INVALID', undefined],
+  ])('rejects %s (%s)', (value, code, suggestion) => {
+    expect(whatsapp(value)).toMatchObject({ valid: false, code });
+    expect(whatsapp(value).suggestion).toBe(suggestion);
   });
 });
 

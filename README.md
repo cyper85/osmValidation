@@ -69,7 +69,7 @@ validates a whole tag including `;`-separated values.
 | `phone(value, { country? })` | `phone`, `fax`, `contact:phone`, `contact:mobile`, `contact:fax`, `contact:sms`, `contact:tty` | `PHONE_VALID`, `PHONE_EMERGENCY`, `PHONE_INVALID`, `PHONE_NOT_INTERNATIONAL`, `PHONE_PLUS_MISSING`, `PHONE_IDD_PREFIX`, `PHONE_TRUNK_PREFIX`, `PHONE_TEL_PREFIX`, `PHONE_WHITESPACE` |
 | `mail(value)` | `email`, `contact:email` | `MAIL_VALID`, `MAIL_INVALID`, `MAIL_DOMAIN_INVALID`, `MAIL_LOCAL_ADDRESS`, `MAIL_MAILTO`, `MAIL_WHITESPACE` |
 | `url(value)`, `webcam(value)` | `website`, `url`, `contact:website`, `contact:webcam` | `URL_VALID`, `URL_INVALID`, `URL_PROTOCOL_INVALID`, `URL_PROTOCOL_MISSING`, `URL_LOCAL_ADDRESS`, `URL_HOST_INVALID`, `URL_WHITESPACE` |
-| `whatsapp(value, { country? })` | `contact:whatsapp` | phone codes with prefix `WHATSAPP_`, plus `WHATSAPP_URL` (wa.me link → number) |
+| `whatsapp(value, { country? })` | `contact:whatsapp` | phone codes with prefix `WHATSAPP_`; links to wa.me: `WHATSAPP_URL_NUMBER` (valid, the number alone is suggested), `WHATSAPP_URL` (username `wa.me/<name>` or business link `wa.me/message/…`), `WHATSAPP_USERNAME` (`@name`, link suggested), `WHATSAPP_URL_PARAMETERS` |
 | `telegram(value, { country? })` | `contact:telegram` | `TELEGRAM_URL`, `TELEGRAM_USERNAME` (valid, t.me link as suggestion), phone codes with prefix `TELEGRAM_` |
 
 ### Social media
