@@ -1,6 +1,6 @@
 {
   "name": "osmvalidation",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-alpha.2",
   "description": "JavaScript library to validate various value-types of OpenStreetMap.",
   "author": "Andreas Neumann <andr.neumann@googlemail.com>",
   "contributors": [

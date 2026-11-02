@@ -147,3 +147,10 @@ npm install
 npm test        # vitest
 npm run build   # TypeScript → dist/
 ```
+
+Every change goes through a pull request that also raises `version` in
+`package.json` (`npm version 1.0.0-alpha.3 --no-git-tag-version`). After the
+merge, a GitHub release with the matching tag (`v1.0.0-alpha.3`) publishes the
+package to npm (`.github/workflows/publish.yaml`, npm trusted publishing, no
+token). A pre-release gets the npm tag `latest` as long as `latest` is not a
+stable version, otherwise `next`.
